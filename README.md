@@ -1,4 +1,5 @@
-# zinserjan's eslint config
+
+# zinserjan's eslint config [![Build Status][build-badge]][build]
 
 ## Install
 
@@ -13,3 +14,6 @@ npm install --save-dev '@zinserjan/eslint-config'
     "extends": "@zinserjan/eslint-config"
 }
 ```
+
+[build-badge]: https://travis-ci.org/zinserjan/eslint-config.svg?branch=master
+[build]: https://travis-ci.org/zinserjan/eslint-config
