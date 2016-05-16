@@ -15,5 +15,9 @@ npm install --save-dev '@zinserjan/eslint-config'
 }
 ```
 
+### License
+
+MIT
+
 [build-badge]: https://travis-ci.org/zinserjan/eslint-config.svg?branch=master
 [build]: https://travis-ci.org/zinserjan/eslint-config
