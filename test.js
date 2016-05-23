@@ -1,6 +1,12 @@
 import readDirRecursive from 'fs-readdir-recursive';
 import path from 'path';
 import { exec } from 'child_process';
+import { CLIEngine } from 'eslint';
+
+
+const cli = new CLIEngine({
+  cwd: path.join(__dirname, 'test')
+});
 
 const sections = {
   good: {
@@ -76,48 +82,22 @@ Promise
   })
 
 function execTests(tests, type) {
-  const testResults = tests.map(file => ({
-    file,
-    result: null
-  }));
-
-  return testResults.reduce((promise, test) => {
-      return promise
-        .then(() => {
-          return execTest(test.file);
-        })
-        .then((result) => {
-          test.result = result;
-        })
-        .catch((err) => {
-          test.result = err;
-        })
-    }, Promise.resolve())
-    .then(() => {
-      return testResults.map((t) => check(t, type));
+  const dir = __dirname;
+  return Promise
+    .resolve()
+    .then(() => cli.executeOnFiles(tests))
+    .then(({results}) => {
+      return results.map((result) => {
+        return {
+          file: result.filePath.replace(dir, ''),
+          result: result
+        };
+      })
     })
-}
-
-function execTest(name, callback) {
-  const rulesetDir = path.join(__dirname, 'test');
-
-  return new Promise((resolve, reject) => {
-    exec(`eslint -f json --max-warnings 0 ${name}`, {
-      cwd: rulesetDir,
-    }, (err, stdout) => {
-      try {
-        const result = JSON.parse(stdout)[0];
-        return resolve(result);
-      } catch (ex) {
-        if (err) {
-          return reject(err);
-        }
-        return reject(ex);
-      }
+    .then((testResults) => {
+      return testResults.map((t) => check(t, type));
     });
-  });
 }
-
 
 function check(test,type) {
   if (test.result instanceof Error) {
