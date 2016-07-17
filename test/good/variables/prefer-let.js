@@ -9,6 +9,9 @@
 
 // good, use the let.
 let count = 1;
+
 if (true) {
   count += 1;
 }
+
+console.log(count); // eslint-disable-line no-console

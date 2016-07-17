@@ -8,4 +8,7 @@
 
  // good
  const foo = 3;
+ const bar = 3;
+
  export { foo };
+ export { bar };
